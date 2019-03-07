@@ -25,12 +25,6 @@ export class PokemonService {
     ;
     const options = {params: params};
 
-    console.log(environment.api_base_url + '/pokemon/combat/attaque', options);
-
     return this.http.post<Combat>(environment.api_base_url + '/pokemon/combat/attaque', null, options);
   }
-
-  // getPokemon(nomPokemon: String): Observable<Pokemon> {
-  //   return this.http.get<Pokemon>(environment.api_base_url + '/pokemon/' + nomPokemon);
-  // }
 }
