@@ -13,7 +13,7 @@ export class PokemonService {
 
   constructor(private http: HttpClient) { }
 
-  lancerCombat(): Observable<Combat> {
+  initialiserCombat(): Observable<Combat> {
     return this.http.post<Combat>(environment.api_base_url + '/pokemon/combat', null);
   }
 

@@ -21,7 +21,7 @@ export class CombatComponent implements OnInit {
   }
 
   lancerCombat() {
-    this.pokemonService.lancerCombat().subscribe(reponse => {
+    this.pokemonService.initialiserCombat().subscribe(reponse => {
       this.combat = reponse;
       this.combatLance = true;
     });

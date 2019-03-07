@@ -4,7 +4,7 @@ import fr.cocktail.kata.beans.Combat;
 
 public interface PokemonRestAPI {
 
-    Combat lancerCombat();
+    Combat initialiserCombat();
     
     Combat lancerAttaque(Long idPokemonAttaquant, Long idAttaque, Long idPokemonRecevantAttaque);
     
