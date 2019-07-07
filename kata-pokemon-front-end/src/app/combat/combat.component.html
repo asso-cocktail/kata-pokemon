@@ -8,31 +8,100 @@
 <button mat-raised-button (click)="lancerCombat()" color="primary">Lancer un nouveau combat</button>
 </div>
 
-<div *ngIf="combatLance" class="wrapper">
+<div *ngIf="combatLance" class="combatSimple">
 
   <div *ngIf="combat.pokemon1">
-    <img [src]="combat.pokemon1.urlImage"><br/>
-    {{combat.pokemon1.nom}}<br/>
-    <mat-progress-bar mode="determinate" [value]="pourcentageViePokemon(combat.pokemon1)" [color]="typeCouleurViePokemon(combat.pokemon1)" ></mat-progress-bar>
-    {{combat.pokemon1.vieActuelle}} / {{combat.pokemon1.vieMaximale}}
-
-    <div>
-      <div *ngFor="let attaque of combat.pokemon1.attaques">
-        <button mat-stroked-button (click)="lancerAttaqueSurPokemon(combat.pokemon1, attaque, combat.pokemon2)">{{attaque.nom}} ({{attaque.degats}})</button>
+    <img [src]="combat.pokemon1.urlImage" [ngClass]="classForPokemon(combat.pokemon1)"><br/>
+    <img src="assets/herbe.svg" alt="herbe" class="herbe" />
+    <div class="infosPokemon">
+      {{combat.pokemon1.nom}}<br/>
+      <mat-progress-bar mode="determinate" [value]="pourcentageViePokemon(combat.pokemon1)" [color]="typeCouleurViePokemon(combat.pokemon1)" ></mat-progress-bar>
+      {{combat.pokemon1.vieActuelle}} / {{combat.pokemon1.vieMaximale}}
+      <div>
+        <div *ngFor="let attaque of combat.pokemon1.attaques">
+          <button mat-stroked-button
+                  (click)="lancerAttaqueSurPokemon(combat.pokemon1, attaque, combat.pokemon2)"
+                  [disabled]="nePeutPasLancerAttaque(combat.pokemon1)">
+            {{attaque.nom}} ({{attaque.degats}})
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
   <div *ngIf="combat.pokemon2">
-    <img [src]="combat.pokemon2.urlImage"><br/>
-    {{combat.pokemon2.nom}}<br/>
-    <mat-progress-bar mode="determinate" [value]="pourcentageViePokemon(combat.pokemon2)" [color]="typeCouleurViePokemon(combat.pokemon2)"></mat-progress-bar>
-    {{combat.pokemon2.vieActuelle}} / {{combat.pokemon2.vieMaximale}}
-
-    <div>
-      <div *ngFor="let attaque of combat.pokemon2.attaques">
-        <button mat-stroked-button (click)="lancerAttaqueSurPokemon(combat.pokemon2, attaque, combat.pokemon1)">{{attaque.nom}} ({{attaque.degats}})</button>
+    <img [src]="combat.pokemon2.urlImage" [ngClass]="classForPokemon(combat.pokemon2)"><br/>
+    <img src="assets/herbe.svg" alt="herbe" class="herbe" />
+    <div class="infosPokemon">
+      {{combat.pokemon2.nom}}<br/>
+      <mat-progress-bar mode="determinate" [value]="pourcentageViePokemon(combat.pokemon2)" [color]="typeCouleurViePokemon(combat.pokemon2)"></mat-progress-bar>
+      {{combat.pokemon2.vieActuelle}} / {{combat.pokemon2.vieMaximale}}
+      <div>
+        <div *ngFor="let attaque of combat.pokemon2.attaques">
+          <button mat-stroked-button
+                  (click)="lancerAttaqueSurPokemon(combat.pokemon2, attaque, combat.pokemon1)"
+                  [disabled]="nePeutPasLancerAttaque(combat.pokemon2)">
+            {{attaque.nom}} ({{attaque.degats}})
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+</div>
+
+<div *ngIf="combatLance" class="combatEquipe">
+  <div style="display: flex">
+    <div style="flex: 1;"></div>
+    <div *ngIf="combat.equipePokemon2" style="display: flex; flex: 1;">
+      <div *ngFor="let pokemon of combat.equipePokemon2" style="margin-left: 20px; min-width: 200px">
+        <img [src]="pokemon.urlImage" [ngClass]="classForPokemon(pokemon)"><br/>
+        <img src="assets/herbe.svg" alt="herbe" class="herbe"/>
+        <div class="infosPokemon">
+          {{pokemon.nom}}<br/>
+          <mat-progress-bar mode="determinate" [value]="pourcentageViePokemon(pokemon)"
+                           [color]="typeCouleurViePokemon(pokemon)"></mat-progress-bar>
+          {{pokemon.vieActuelle}} / {{pokemon.vieMaximale}}
+          <div *ngIf="pokemon.vieActuelle > 0">
+            <div *ngFor="let attaque of pokemon.attaques">
+              <div *ngFor="let pokemonAdverse of pokemonsPouvantEtreAttaques(combat.equipePokemon1)">
+                <button mat-stroked-button
+                        (click)="lancerAttaqueSurPokemon(pokemon, attaque, pokemonAdverse)"
+                        [disabled]="nePeutPasLancerAttaque(pokemon)">
+                    {{libelleBoutonAttaque(attaque, pokemonAdverse, combat.equipePokemon1)}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style = "display: flex">
+  <div *ngIf="combat.equipePokemon1" style="display: flex; flex: 1; justify-content: flex-end;">
+    <div *ngFor="let pokemon of combat.equipePokemon1" style="margin-right: 20px; min-width: 200px">
+      <img [src]="pokemon.urlImage" [ngClass]="classForPokemon(pokemon)"><br/>
+      <img src="assets/herbe.svg" alt="herbe" class="herbe"/>
+      <div class="infosPokemon">
+        {{pokemon.nom}}<br/>
+        <mat-progress-bar mode="determinate" [value]="pourcentageViePokemon(pokemon)"
+                          [color]="typeCouleurViePokemon(pokemon)"></mat-progress-bar>
+        {{pokemon.vieActuelle}} / {{pokemon.vieMaximale}}
+        <div *ngIf="pokemon.vieActuelle > 0">
+          <div *ngFor="let attaque of pokemon.attaques">
+            <div *ngFor="let pokemonAdverse of pokemonsPouvantEtreAttaques(combat.equipePokemon2)">
+              <button mat-stroked-button
+                      (click)="lancerAttaqueSurPokemon(pokemon, attaque, pokemonAdverse)"
+                      [disabled]="nePeutPasLancerAttaque(pokemon)">
+                  {{libelleBoutonAttaque(attaque, pokemonAdverse, combat.equipePokemon2)}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1;"></div>
+</div>
 </div>
