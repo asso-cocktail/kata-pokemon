@@ -70,7 +70,7 @@ Postman est téléchargeable [ici](https://www.getpostman.com/downloads/).
 
 ## Exercice
 
-Faire fonctionner le combat entre deux pokémons.
+Faire fonctionner le combat entre des pokémons.
 
 * Tester avec Postman que l'appel `GET` à `http://localhost:8080/pokemon` retourne bien `Hello World`
 * Modifier la classe `PokemonController` en lui faisant implémenter l'interface `PokemonRestAPI`
@@ -79,3 +79,5 @@ Faire fonctionner le combat entre deux pokémons.
 * Vérifier que le combat démarre dans l'application lors du clic sur le bouton `Lancer un nouveau combat`
 * Implémenter `lancerAttaque` pour infliger des dégats à un pokemon et tester avec Postman
 * Verifier qu'un pokémon perd de la vie lors d'une attaque dans l'application
+* Modifier la classe `Combat` pour mettre en place un combat par équipe (2 contre 2)
+  * L'url de l'image d'un pokemon de dos peut s'obtenir de la maniere suivante `"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/" + numero + ".png"`
